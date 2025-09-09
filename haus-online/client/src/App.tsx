@@ -1,34 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react'
+import { createDeck, shuffleCards } from './utils/deck'
+import { getCardImage } from './utils/imageUtils'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [deck, setDeck] = useState(createDeck())
+
+  const handleShuffle = () => {
+    const shuffledDeck = shuffleCards([...deck]);
+    setDeck(shuffledDeck);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <button onClick={handleShuffle}>Shuffle Deck</button>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '20px' }}>
+        {deck.map((card, index) => (
+          <img 
+            key={index}
+            src={getCardImage(card)} 
+            alt={`${card.rank} of ${card.suit}`} 
+            style={{ width: '80px', height: 'auto' }}
+          />
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
